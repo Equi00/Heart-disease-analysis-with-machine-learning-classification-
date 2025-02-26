@@ -31,7 +31,6 @@ print(df.info())
 
 print("\nNUMBER OF NULL VALUES PER COLUMN")
 print(df.isnull().sum())
-input("descripcion de columnas")
 
 print("\nDESCRIPTION OF COLUMNS age, sex and cp")
 print(df[['age', 'sex', 'cp']].describe())
@@ -45,7 +44,6 @@ print(df[['restecg', 'thalach', 'exang']].describe())
 print("\nDESCRIPTION OF COLUMNS oldpeak, slope Y ca")
 print(df[['oldpeak', 'slope', 'ca']].describe())
 
-input("eliminar datos mal puestos en CA (NUMERO DE VASOS PRINCIPALES)")
 df["ca"] = df["ca"].replace(4, np.nan)
 sns.heatmap(df.isnull(), cbar=False)
 plt.show()
@@ -55,7 +53,6 @@ df = drop_na(df)
 print("\nDESCRIPTION OF COLUMN ca WITHOUT 4")
 print(df["ca"].describe())
 
-input("visualizacion de THAL y TARGET, eliminacion de valores mal puestos")
 print("\nDESCRIPTION OF COLUMN thal y target")
 print(df[['thal', 'target']].describe())
 
@@ -68,7 +65,6 @@ df = drop_na(df)
 print("\nDESCRIPTION OF COLUMN thal y target")
 print(df[['thal', 'target']].describe())
 
-input("grafico de distribucion de las variables numericas")
 fig, axes = plt.subplots(nrows=2, ncols=7, figsize=(9, 5))
 axes = axes.flat
 
@@ -109,7 +105,6 @@ for i, colum in enumerate(columnas_numeric):
 plt.tight_layout()
 plt.show()
 
-input("analisis univariado, mediam mediana y moda")
 
 columnas_numeric = df.select_dtypes(include=['float64', 'int64']).columns
 for i, colum in enumerate(columnas_numeric):
@@ -118,7 +113,6 @@ for i, colum in enumerate(columnas_numeric):
      \nMedian: {df[colum].median()} \
      \nMode: {df[colum].mode()}')
 
-input("Medidas de dispersión: desviación típica, rango, IQR, coeficiente de variación, desviación media")
 print(f'\nThe variance is:\n{df.var()}')
 
 print(f'\nStandard Deviation per row:\n{df.std(axis=0)}')
@@ -134,13 +128,11 @@ print(
     f'\nThe coefficient of variation is:\n{df.select_dtypes(include=["int16", "int32", "int64", "float16", "float32", "float64"]).apply(cv)}')
 
 
-input("medidas de asimetria")
 
 print(f"\nAsymmetry measures are:\n{df.skew()}")
 
 print(f"\nThe kurtosis measures are:\n{df.kurt()}")
 
-input("deteccion y eliminacion de outliers")
 df.plot(kind='box', subplots=True, layout=(2, 7),
         sharex=False, sharey=False, figsize=(20, 10))
 plt.show()
@@ -156,7 +148,6 @@ df_without_outlier.plot(kind='box', subplots=True, layout=(2, 7),
                     sharex=False, sharey=False, figsize=(20, 10))
 plt.show()
 
-input("cambio de variables numericas a categoricas")
 df_categoric = df_without_outlier.copy()
 
 df_categoric['target'] = df_categoric.target.replace({1: "With_disease", 0: "Without_disease"})
@@ -170,7 +161,6 @@ df_categoric['thal'] = df_categoric.thal.replace({1: "Reversible_defect", 2: "Fi
 
 categorical_columns = ['target', 'sex', 'cp', 'exang', 'fbs', 'slope', 'thal']
 
-# Obtener el conteo y el porcentaje de cada valor
 for col in categorical_columns:
     counts = df_categoric[col].value_counts()
     percentages = df_categoric[col].value_counts(normalize=True) * 100
@@ -180,7 +170,6 @@ for col in categorical_columns:
     print(summary)
 
 
-input("grafico de las variables categoricas")
 
 
 fig, ax = plt.subplots(figsize=(5, 4))
@@ -246,8 +235,6 @@ ax.set_xticklabels(name, rotation=0)
 
 graph_percentage(ax)
 
-input("matriz de correlaciones")
-# Heatmap matriz de correlaciones
 
 print("\nCORRELATION MATRIX WITH OUTLIERS\n")
 for i, colum in enumerate(['pearson', 'spearman', 'kendall']):
@@ -299,7 +286,6 @@ for i, colum in enumerate(['pearson', 'spearman', 'kendall']):
     ax.tick_params(labelsize=10)
     plt.show()
 
-input("analisis estadistico")
 
 
 classifier = LogisticRegression(random_state=0)
@@ -315,7 +301,6 @@ logistic(df_without_outlier, classifier)
 print("\nLinear logistic regression with non-categorical data from a dataset without outliers:")
 no_categoric_logistic(df_without_outlier, classifier)
 
-input("Statistical analysis with KNN")
 X = df[["cp", "thalach", "slope", "oldpeak", "exang", "ca", "thal", "sex", "age"]].values
 y = df["target"].values
 
@@ -357,7 +342,6 @@ logistic(df_without_outlier, classifier_df_sin_outlier)
 print("\nKNN logistics for dataset with non-categorical data without outlier:")
 no_categoric_logistic(df_without_outlier, classifier_df_sin_outlier_no_categoric)
 
-input("maquinas de soporte vectorial")
 
 classifier_svc_linear = SVC(kernel="linear", random_state=0)
 classifier_svc_poly = SVC(kernel="poly", random_state=0)
@@ -413,7 +397,6 @@ no_categoric_logistic(df_without_outlier, classifier_svc_rbf)
 print("\nLogistic regression classifier_svc_sigmoid for dataset with non-categorical data without outlier:")
 no_categoric_logistic(df_without_outlier, classifier_svc_sigmoid)
 
-input("naive bayes")
 classifier = GaussianNB()
 
 print("\nNaive Bayes logistic regression for normal dataset:")
@@ -428,7 +411,6 @@ logistic(df_without_outlier, classifier)
 print("\nNaive Bayes logistic regression for dataset with non-categorical data without outlier:")
 no_categoric_logistic(df_without_outlier, classifier)
 
-input("arboles de decision")
 
 classifier_tree = DecisionTreeClassifier(criterion="entropy", random_state=0)
 
@@ -444,7 +426,6 @@ logistic(df_without_outlier, classifier_tree)
 print("\nLogistic regression with decision trees for dataset with non-categorical data without outlier:")
 no_categoric_logistic(df_without_outlier, classifier_tree)
 
-input("random forest")
 
 print("\nRandom forest for dataset with outliers:")
 max_depth_random_forest(df)
